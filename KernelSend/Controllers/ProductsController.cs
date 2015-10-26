@@ -65,5 +65,22 @@ namespace KernelSend.Controllers
             await db.SaveChangesAsync();
             return Created(product);
         }
+
+        /// <summary>
+        /// Delete product
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task<IHttpActionResult> Delete([FromODataUri] int key)
+        {
+            var product = await db.Products.FindAsync(key);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            db.Products.Remove(product);
+            await db.SaveChangesAsync();
+            return StatusCode(HttpStatusCode.NoContent);
+        }
     }
 }
